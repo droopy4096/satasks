@@ -1,0 +1,16 @@
+#!/bin/sh
+
+TASK_DIR=${HOME}/work/tasks
+QUEUE_DIR=${TASK_DIR}/queue
+
+cd ${QUEUE_DIR}
+
+for d in *
+    do
+        if [ -d $d -a ! -L $d ]
+        then
+            desc=""
+            [ -e $d/info ] && desc=$(cat $d/info)
+            echo -e "$d\t$desc"
+        fi
+    done

@@ -1,2 +1,0 @@
-# satasks
-Sysadmin tasks
