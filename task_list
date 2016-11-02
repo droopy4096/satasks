@@ -1,16 +1,29 @@
 #!/bin/sh
 
+SESSION=${1}
 TASK_DIR=${HOME}/work/tasks
 QUEUE_DIR=${TASK_DIR}/queue
+
+SCREEN_SESSIONS=$(screen -list | awk '/[[:digit:]]+\.[[:alnum:]]+/{split($1,session,"."); print session[2];}')
 
 cd ${QUEUE_DIR}
 
 for d in *
     do
+        ind="  "
+        if ( echo $SCREEN_SESSIONS | grep -q $d )
+        then
+          ind="* "
+        fi
         if [ -d $d -a ! -L $d ]
         then
             desc=""
-            [ -e $d/info ] && desc=$(cat $d/info)
-            echo -e "$d\t$desc"
+            if [ -e $d/info ] 
+                then 
+                    desc=$(cat $d/info)
+                else
+                    desc="-------"
+            fi
+            echo -e "$ind$d\t$desc"
         fi
     done
