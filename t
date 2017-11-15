@@ -1,11 +1,14 @@
 #!/bin/sh
 
-while getopts ":c" opt
+while getopts ":cx" opt
 do
   case $opt in
     c) COMPLETE=1
       ;;
+    x) TERMINATE=1
+      ;;
     *) COMPLETE=0
+       TERMINATE=0
       ;;
   esac
 done
@@ -20,17 +23,23 @@ SESSION_DIR=${QUEUE_DIR}/${SESSION}
 FINISHED_SESSION_DIR=${COMPLETED_DIR}/${SESSION}
 SESSION_DESC=${2:-}
 
-mkdir -p ${SESSION_DIR}
-
-cd ${SESSION_DIR}
-
-if [ -n "${SESSION_DESC}" ]
+if [ "${TERMINATE}" = "1" ]
 then
-    echo "${SESSION_DESC}" > info
+  screen -S ${SESSION} -X quit
+
+else
+  mkdir -p ${SESSION_DIR}
+
+  cd ${SESSION_DIR}
+
+  if [ -n "${SESSION_DESC}" ]
+  then
+      echo "${SESSION_DESC}" > info
+  fi
+
+
+  screen -d -r ${SESSION} || screen -S ${SESSION}
 fi
-
-
-screen -d -r ${SESSION} || screen -S ${SESSION}
 
 if [ "$COMPLETE" = "1" ] 
 then

@@ -27,3 +27,12 @@ for d in *
             echo -e "$ind$d\t$desc"
         fi
     done
+
+for s in ${SCREEN_SESSIONS}
+do
+  if [ ! -d ${QUEUE_DIR}/${s} ] 
+  then
+    desc="--notask--"
+    echo -e "? $s\t$desc"
+  fi
+done
