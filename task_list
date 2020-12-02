@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 SESSION=${1}
 TASK_DIR=${HOME}/work/tasks
@@ -33,6 +33,6 @@ do
   if [ ! -d ${QUEUE_DIR}/${s} ] 
   then
     desc="--notask--"
-    echo -e "? $s\t$desc"
+    /bin/echo -e "? $s\t$desc"
   fi
 done
